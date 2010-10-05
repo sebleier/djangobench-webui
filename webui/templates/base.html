@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}Djangobench{% endblock %}</title>
+        <style type="text/css">
+            h1 { color: #999999; font: bold 24px Georgia; }
+            h2 { color: #999999; font: bold 20px Georgia; }
+            table.results tr td, th { border: #cccccc solid 1px; padding: 4px 8px 4px 8px;  }
+            table.results tr td.negative { background-color: #ffcccc; color: #993333; font-weight: bold; }
+            table.results tr td.positive { background-color: #ccffcc; color: #339933; font-weight: bold; }
+            table.results tr:first-child { background-color: #ffffcc; }
+            .stat { font: bold 14px arial; color: #333333; background-color: #ffffcc; }
+            .t_msg { font-size: 11px; }
+            a.benchmark { color: inherit; font: inherit; text-decoration: inherit;}
+            #benchmark_graph { width: 800px; height: 500px; margin: 0 20px 20px 20px;}
+
+        </style>
+        <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-1.4.2.min.js"></script>
+        <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}flot/jquery.flot.js"></script>
+        <script type="text/javascript" src="{{ MEDIA_URL }}fancybox/jquery.fancybox-1.3.1.pack.js"></script>
+        <script language="javascript" type="text/javascript">
+            $(document).ready(function() {
+                $("a.benchmark").click(function() {
+                    var title = $(this).parent()[0].id;
+                    $.ajax({
+                        type: "GET",
+                        cache: false,
+                        url: this.href,
+                        success: function(data) {
+                            $.fancybox('<h2>' + title + '</h2><div id="benchmark_graph"></div>', {padding: 20});
+                            datasets = {control: [], experiment: []};
+                            for (var i = 0; i < data['control_data'].length; i++) {
+                                datasets['control'].push([i, data['control_data'][i]])
+                                datasets['experiment'].push([i, data['experiment_data'][i]])
+                            }
+                            $.plot("#benchmark_graph", [
+                                {label: "Control", data: datasets['control']},
+                                {label: "Experiment", data: datasets['experiment']},
+                            ])
+                        }
+                    });
+                    return false;
+                });
+            });
+        </script>
+        <link rel="stylesheet" href="{{ MEDIA_URL }}fancybox/jquery.fancybox-1.3.1.css" type="text/css" media="screen" />
+    </head>
+    <body>
+        <h1>Djangobench Results</h1>
+        <table cellpadding="0" cellspacing="0" class="results">
+            <tr>
+                <th>benchmark</th>
+                <th>&nbsp;</th>
+                <th>Control</th>
+                <th>Experiment</th>
+                <th>Change</th>
+            </tr>
+            {% for benchmark in benchmarks %}
+            <tr>
+                <td id="{{ benchmark.name}}" rowspan="3"{% if "Not significant" not in benchmark.result.t_msg %}{% if benchmark.result.t_msg.15 == '-' %} class="negative"{% else %} class="positive"{% endif %}{% endif %}><a class="benchmark" href="data/{{ benchmark.name}}">{{ benchmark.name}}</a>{% if "Not significant" not in benchmark.result.t_msg %}<br /><span class="t_msg">{{ benchmark.result.t_msg }}</span>{% endif %}</td>
+                <td class="stat">Min</td>
+                <td>{{ benchmark.result.min_base|floatformat:"-6" }}</td>
+                <td>{{ benchmark.result.min_changed|floatformat:"-6" }}</td>
+                <td{% if "faster" in benchmark.result.delta_min %} class="positive"{% else %} class="negative"{% endif %}>{{ benchmark.result.delta_min }}</td>
+            </tr>
+            <tr>
+                <td class="stat">Avg</td>
+                <td>{{ benchmark.result.avg_base|floatformat:"-6" }}</td>
+                <td>{{ benchmark.result.avg_changed|floatformat:"-6" }}</td>
+                <td{% if "faster" in benchmark.result.delta_avg %} class="positive"{% else %} class="negative"{% endif %}>{{ benchmark.result.delta_avg }}</td>
+            </td>
+            <tr>
+                <td class="stat">Stddev</td>
+                <td>{{ benchmark.result.std_base|floatformat:"-6" }}</td>
+                <td>{{ benchmark.result.std_changed|floatformat:"-6" }}</td>
+                <td{% if "smaller" in benchmark.result.delta_std %} class="positive"{% else %} class="negative"{% endif %}>{{ benchmark.result.delta_std }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>

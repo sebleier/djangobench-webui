@@ -1,0 +1,2 @@
+django
+-e git+git://github.com/jacobian/djangobench.git#egg=djangobench
