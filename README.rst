@@ -17,19 +17,10 @@ commands::
     cd djangobench
     . bin/activate
     pip install -e git+git://github.com/sebleier/djangobench-webui.git#egg=djangobench-webui
-    pip install -e git://github.com/jacobian/djangobench.git#egg=djangobench
+    pip install -e git+git://github.com/jacobian/djangobench.git#egg=djangobench
     mkdir results
     git clone git://github.com/django/django.git
     cd django
     djangobench --vcs=git --control=1.2 --experiment=master --record ../results
-    cd ..
-    django-admin.py startproject djangobench_webui
-    cd djangobench_webui
-    echo "
-    import os
-    INSTALLED_APPS = INSTALLED_APPS + ('webui',)
-    ROOT_URLCONF = 'webui.urls'
-    RESULTS_DIR = os.path.join(os.path.dirname(__file__), '..', 'results')
-    MEDIA_URL = 'site_media/'
-    " >> settings.py
+    cd ../src/djangobench-webui/djangobench_webui
     python manage.py runserver
