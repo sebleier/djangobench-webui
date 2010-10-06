@@ -1,2 +1,3 @@
 django
 -e git+git://github.com/jacobian/djangobench.git#egg=djangobench
+-e git+git://github.com/gregmuellegger/django-websocket.git#egg=django-websocket

@@ -8,10 +8,10 @@ djangobench-webui is a django app to visualize the results of the `djangobench`_
 Installation
 ============
 
-This is a quick and dirty installation to get up and running.  I've included all
-the javascript libraries and enabled django to serve static files.  Just
-change to the directory where you want your virtualenv and enter the following
-commands::
+This is a quick and dirty installation to get up and running, assuming you are
+using virtualenv + pip.  I've included all the javascript libraries and enabled
+django to serve static files to ease the setup.  Just change to the directory
+where you want your virtualenv and enter the following commands::
 
     virtualenv --no-site-packages djangobench
     cd djangobench
@@ -23,4 +23,4 @@ commands::
     cd django
     djangobench --vcs=git --control=1.2 --experiment=master --record ../results
     cd ../src/djangobench-webui/djangobench_webui
-    python manage.py runserver
+    python manage.py runserver --multithreaded

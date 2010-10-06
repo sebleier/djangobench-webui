@@ -31,6 +31,7 @@ TEMPLATE_DIRS = ()
 # Important Settings
 INSTALLED_APPS = (
     'djangobench_webui.webui',
+    'django_websocket',
 )
 MEDIA_URL = 'site_media/'
 ROOT_URLCONF = 'djangobench_webui.urls'
