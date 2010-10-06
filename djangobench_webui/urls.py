@@ -1,13 +1,11 @@
+import os
 from django.conf import settings
 from django.conf.urls.defaults import *
-import os
-import webui
-
+from djangobench_webui import webui
 
 
 urlpatterns = patterns('',
-    (r'^$', 'webui.views.results'),
-    (r'^data/(?P<benchmark>\w+)', 'webui.views.benchmark_data'),
+    (r'', include('djangobench_webui.webui.urls')),
 )
 
 if settings.DEBUG:

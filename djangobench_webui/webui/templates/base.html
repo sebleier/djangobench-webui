@@ -57,7 +57,7 @@
             </tr>
             {% for benchmark in benchmarks %}
             <tr>
-                <td id="{{ benchmark.name}}" rowspan="3"{% if "Not significant" not in benchmark.result.t_msg %}{% if benchmark.result.t_msg.15 == '-' %} class="negative"{% else %} class="positive"{% endif %}{% endif %}><a class="benchmark" href="data/{{ benchmark.name}}">{{ benchmark.name}}</a>{% if "Not significant" not in benchmark.result.t_msg %}<br /><span class="t_msg">{{ benchmark.result.t_msg }}</span>{% endif %}</td>
+                <td id="{{ benchmark.name}}" rowspan="3"{% if "Not significant" not in benchmark.result.t_msg %}{% if benchmark.result.t_msg.15 == '-' %} class="negative"{% else %} class="positive"{% endif %}{% endif %}><a class="benchmark" href="data/{{ benchmark.name}}/">{{ benchmark.name}}</a>{% if "Not significant" not in benchmark.result.t_msg %}<br /><span class="t_msg">{{ benchmark.result.t_msg }}</span>{% endif %}</td>
                 <td class="stat">Min</td>
                 <td>{{ benchmark.result.min_base|floatformat:"-6" }}</td>
                 <td>{{ benchmark.result.min_changed|floatformat:"-6" }}</td>

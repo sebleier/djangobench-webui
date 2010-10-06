@@ -12,7 +12,6 @@ setup(
     author_email = "sebleier@gmail.com",
     version = "0.1",
     license = "BSD",
-    packages = ["webui"],   
     install_requires = ['Unipath==0.2.1', 'django'],
     description = "A web user interface for djangobench benchmark results",
     long_description = read('README.rst'),
